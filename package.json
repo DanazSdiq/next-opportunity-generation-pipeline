@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "scraping your next opportunities",
   "main": "index.js",
-  "pre-commit": ["prettier-format"],
+  "pre-commit": [
+    "prettier-format"
+  ],
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "dev": "ts-node-dev /src/index.ts",
+    "test": "NODE_ENV=test ",
+    "dev": "NODE_ENV=development ts-node-dev ./src/index.ts",
     "start": "npm run build && node build/index.js",
     "build": "rm -rf ./build && tsc"
   },
@@ -26,5 +29,11 @@
     "prettier": "^3.0.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.0.3",
+    "zod": "^3.21.4"
   }
 }
