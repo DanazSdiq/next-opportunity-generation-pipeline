@@ -1,4 +1,4 @@
-import { Opportunity } from "../../opportunities/scrapers.schema";
+import { Opportunity } from "../../opportunities/opportunities.schema";
 import { BrowserClass, PageConfig } from "../";
 import { CacheConfig } from "./base.schema";
 
