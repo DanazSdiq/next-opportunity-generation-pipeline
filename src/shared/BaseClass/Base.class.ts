@@ -1,12 +1,14 @@
 import { Opportunity } from "../../opportunities/opportunities.schema";
-import { BrowserClass, PageConfig } from "../";
-import { CacheConfig } from "./base.schema";
+import { BrowserClass, PageConfig, instance } from "../";
+import { CacheConfig, Organization } from "./base.schema";
 
 export class BaseClass {
   public cacheConfig: CacheConfig = {
     shouldCachePages: true,
     shouldReadFromCache: true
   };
+
+  public organizations: Organization[] = [];
 
   public parentPages: PageConfig[] = [];
   public isProcessingParentPages: boolean = false;
@@ -52,5 +54,8 @@ export class BaseClass {
     body;
   }
 
-  async postOpportunities() {}
+  async postOpportunities() {
+    await instance.post("/organizations", this.organizations);
+    await instance.post("/opportunities", this.opportunities);
+  }
 }

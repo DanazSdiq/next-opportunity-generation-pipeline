@@ -1,11 +1,15 @@
 import * as cheerio from "cheerio";
+import { v4 as uuidv4 } from "uuid";
 
 import { OpportunityCommitment } from "./opportunities.schema";
 import { BaseClass } from "../shared/BaseClass/Base.class";
-import { PageConfig } from "../shared";
+import { Organization, PageConfig } from "../shared";
 
 export class OpportunityClass extends BaseClass {
-  parentPages: PageConfig[] = [{ url: "https://jobs.lever.co/coingecko" }];
+  organizations: Organization[] = [
+    { name: "CoinGecko", main_url: "https://jobs.lever.co/coingecko" }
+  ];
+  parentPages: PageConfig[] = [{ url: this.organizations[0].main_url }];
 
   async start() {
     await this.beginToRetrieve();
@@ -30,7 +34,7 @@ export class OpportunityClass extends BaseClass {
   private handleOpportunityPage(body: string): void {
     const $ = cheerio.load(body);
 
-    const company = this.getCompanyName();
+    const organization = this.getOrganizationName();
     const heading: string = $(".posting-headline h2").text() || "";
     const description: string = $("[data-qa='job-description']").text();
 
@@ -61,8 +65,9 @@ export class OpportunityClass extends BaseClass {
           .trim() || "";
 
       this.opportunities.push({
+        id: uuidv4(),
         url: this.activePage.url,
-        company,
+        organization_name: organization,
         title: heading,
         description,
         labels: [location, department, type],
@@ -71,8 +76,15 @@ export class OpportunityClass extends BaseClass {
     });
   }
 
-  private getCompanyName = (): string => {
-    return this.parentPages[0].url.replace(/.*jobs.lever.co\//, "").trim();
+  private getOrganizationName = (): string => {
+    const nameFromUrl = this.parentPages[0].url
+      .replace(/.*jobs.lever.co\//, "")
+      .trim();
+    const registeredName = this.organizations.find(
+      (org) => org.name.toLowerCase() === nameFromUrl
+    );
+
+    return registeredName?.name || "";
   };
 
   private getCommitment = (

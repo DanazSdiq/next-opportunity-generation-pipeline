@@ -9,7 +9,8 @@ const scraperSchema = z.object({
 export type Scraper = z.infer<typeof scraperSchema>;
 
 const opportunitySchema = z.object({
-  company: z.string(),
+  id: z.string().uuid(),
+  organization_name: z.string(),
   title: z.string(),
   url: z.string(),
   description: z.string(),
