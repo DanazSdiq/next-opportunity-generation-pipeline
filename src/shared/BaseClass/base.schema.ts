@@ -5,4 +5,10 @@ const cacheConfigSchema = z.object({
   shouldReadFromCache: z.boolean()
 });
 
+const organizationSchema = z.object({
+  name: z.string(),
+  main_url: z.string().url()
+});
+
 export type CacheConfig = z.infer<typeof cacheConfigSchema>;
+export type Organization = z.infer<typeof organizationSchema>;
