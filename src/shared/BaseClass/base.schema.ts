@@ -7,7 +7,8 @@ const cacheConfigSchema = z.object({
 
 const organizationSchema = z.object({
   name: z.string(),
-  main_url: z.string().url()
+  main_url: z.string().url(),
+  created_at: z.string()
 });
 
 export type CacheConfig = z.infer<typeof cacheConfigSchema>;
