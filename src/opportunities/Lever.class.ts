@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import { v4 as uuidv4 } from "uuid";
+import TurndownService from "turndown";
 
 import { OpportunityCommitment } from "./opportunities.schema";
 import { BaseClass } from "../shared/BaseClass/Base.class";
@@ -36,7 +37,9 @@ export class OpportunityClass extends BaseClass {
 
     const organization = this.getOrganizationName();
     const heading: string = $(".posting-headline h2").text() || "";
-    const description: string = $("[data-qa='job-description']").text();
+    const description: string = this.handleDescription(
+      $("[data-qa='job-description']").html() || ""
+    );
 
     $(".posting-categories").each((_i: number, el: cheerio.Element) => {
       const location: string =
@@ -106,5 +109,10 @@ export class OpportunityClass extends BaseClass {
     }
 
     return { commitment: "unknown" };
+  };
+
+  private handleDescription = (html: string): string => {
+    const turndownService = new TurndownService();
+    return turndownService.turndown(html);
   };
 }
