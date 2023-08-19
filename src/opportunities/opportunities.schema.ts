@@ -20,7 +20,8 @@ const opportunitySchema = z.object({
     z.literal("part-time"),
     z.literal("contract"),
     z.literal("unknown")
-  ])
+  ]),
+  created_at: z.string()
 });
 const commitmentSchema = opportunitySchema.pick({ commitment: true });
 

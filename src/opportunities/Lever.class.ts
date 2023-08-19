@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { v4 as uuidv4 } from "uuid";
 import TurndownService from "turndown";
+import { format } from "date-fns";
 
 import { OpportunityCommitment } from "./opportunities.schema";
 import { BaseClass } from "../shared/BaseClass/Base.class";
@@ -8,7 +9,11 @@ import { Organization, PageConfig } from "../shared";
 
 export class OpportunityClass extends BaseClass {
   organizations: Organization[] = [
-    { name: "CoinGecko", main_url: "https://jobs.lever.co/coingecko" }
+    {
+      name: "CoinGecko",
+      main_url: "https://jobs.lever.co/coingecko",
+      created_at: format(new Date(), "yyyy-MM-dd")
+    }
   ];
   parentPages: PageConfig[] = [{ url: this.organizations[0].main_url }];
 
@@ -74,7 +79,8 @@ export class OpportunityClass extends BaseClass {
         title: heading,
         description,
         labels: [location, department, type],
-        commitment
+        commitment,
+        created_at: format(new Date(), "yyyy-MM-dd")
       });
     });
   }
