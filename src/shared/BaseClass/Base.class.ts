@@ -1,5 +1,5 @@
 import { Opportunity } from "../../opportunities/opportunities.schema";
-import { BrowserClass, PageConfig, instance } from "../";
+import { BrowserClass, PageConfig, instance, log } from "../";
 import { CacheConfig, Organization } from "./base.schema";
 import { Cache } from "../";
 
@@ -35,6 +35,8 @@ export class BaseClass {
         waitForSelector: waitForSelector
       };
 
+      log.info("Attempting to read from cache " + url);
+
       let body: string = this.cacheConfig.shouldReadFromCache
         ? caching.readFromCache(url)
         : "";
@@ -44,6 +46,7 @@ export class BaseClass {
         body = await browser.extractHtml();
         if (this.cacheConfig.shouldCachePages) {
           caching.cacheContent(body, url);
+          log.info("Cached " + url);
         }
       }
 
@@ -66,7 +69,13 @@ export class BaseClass {
   }
 
   async postOpportunities() {
-    await instance.post("/organizations", this.organizations);
-    await instance.post("/opportunities", this.opportunities);
+    try {
+      await instance.post("/organizations", this.organizations);
+      log.info("Posted organizations");
+      await instance.post("/opportunities", this.opportunities);
+      log.info("Posted opportunities");
+    } catch (error) {
+      log.error("Failed to post opportunities: %o " + error);
+    }
   }
 }
