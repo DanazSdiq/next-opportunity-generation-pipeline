@@ -13,9 +13,23 @@ export class OpportunityClass extends BaseClass {
       name: "CoinGecko",
       main_url: "https://jobs.lever.co/coingecko",
       created_at: format(new Date(), "yyyy-MM-dd")
+    },
+    {
+      name: "Polygon",
+      main_url: "https://jobs.lever.co/Polygon",
+      created_at: format(new Date(), "yyyy-MM-dd")
+    },
+    {
+      name: "Chainlink",
+      main_url: "https://jobs.lever.co/chainlink",
+      created_at: format(new Date(), "yyyy-MM-dd")
     }
   ];
-  parentPages: PageConfig[] = [{ url: this.organizations[0].main_url }];
+  parentPages: PageConfig[] = [
+    { url: this.organizations[0].main_url },
+    { url: this.organizations[1].main_url },
+    { url: this.organizations[2].main_url }
+  ];
 
   async start() {
     await this.beginToRetrieve();
@@ -86,8 +100,9 @@ export class OpportunityClass extends BaseClass {
   }
 
   private getOrganizationName = (): string => {
-    const nameFromUrl = this.parentPages[0].url
+    const nameFromUrl = this.activePage.url
       .replace(/.*jobs.lever.co\//, "")
+      .replace(/\/.*/g, "")
       .trim();
     const registeredName = this.organizations.find(
       (org) => org.name.toLowerCase() === nameFromUrl
