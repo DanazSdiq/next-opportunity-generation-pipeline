@@ -1,6 +1,7 @@
 import { Opportunity } from "../../opportunities/opportunities.schema";
 import { BrowserClass, PageConfig, instance } from "../";
 import { CacheConfig, Organization } from "./base.schema";
+import { Cache } from "../";
 
 export class BaseClass {
   public cacheConfig: CacheConfig = {
@@ -22,6 +23,7 @@ export class BaseClass {
   async beginToRetrieve() {
     const activePages = this.parentPages;
     let shouldAppendMorePagesIfExists: boolean = true;
+    const caching = new Cache();
     const browser = new BrowserClass();
     await browser.init();
 
@@ -33,8 +35,17 @@ export class BaseClass {
         waitForSelector: waitForSelector
       };
 
-      await browser.navigateTo(url, waitForSelector);
-      const body: string = await browser.extractHtml();
+      let body: string = this.cacheConfig.shouldReadFromCache
+        ? caching.readFromCache(url)
+        : "";
+
+      if (body.length === 0) {
+        await browser.navigateTo(url, waitForSelector);
+        body = await browser.extractHtml();
+        if (this.cacheConfig.shouldCachePages) {
+          caching.cacheContent(body, url);
+        }
+      }
 
       this.handlePageContent(body);
 
