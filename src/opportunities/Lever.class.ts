@@ -1,11 +1,10 @@
 import * as cheerio from "cheerio";
 import { v4 as uuidv4 } from "uuid";
-import TurndownService from "turndown";
 import { format } from "date-fns";
 
 import { OpportunityCommitment } from "./opportunities.schema";
 import { BaseClass } from "../shared/BaseClass/Base.class";
-import { Organization, PageConfig } from "../shared";
+import { Organization, PageConfig, convertHTMLToMarkdown } from "../shared";
 
 export class OpportunityClass extends BaseClass {
   organizations: Organization[] = [
@@ -35,7 +34,8 @@ export class OpportunityClass extends BaseClass {
     await this.beginToRetrieve();
   }
 
-  handlePageContent(body: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handlePageContent(body: string, url: string) {
     if (this.isProcessingParentPages) this.handlePrimaryPage(body);
     if (this.isProcessingChildPages) this.handleOpportunityPage(body);
   }
@@ -56,7 +56,7 @@ export class OpportunityClass extends BaseClass {
 
     const organization = this.getOrganizationName();
     const heading: string = $(".posting-headline h2").text() || "";
-    const description: string = this.handleDescription(
+    const description: string = convertHTMLToMarkdown(
       $("[data-qa='job-description']").html() || ""
     );
 
@@ -130,10 +130,5 @@ export class OpportunityClass extends BaseClass {
     }
 
     return { commitment: "unknown" };
-  };
-
-  private handleDescription = (html: string): string => {
-    const turndownService = new TurndownService();
-    return turndownService.turndown(html);
   };
 }
