@@ -50,7 +50,7 @@ export class BaseClass {
         }
       }
 
-      this.handlePageContent(body);
+      this.handlePageContent(body, url);
 
       if (index === activePages.length - 1 && shouldAppendMorePagesIfExists) {
         shouldAppendMorePagesIfExists = false;
@@ -64,11 +64,17 @@ export class BaseClass {
     await this.postOpportunities();
   }
 
-  handlePageContent(body: string) {
-    body;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handlePageContent(body: string, url: string) {}
 
   async postOpportunities() {
+    if (this.organizations.length === 0 || this.opportunities.length === 0) {
+      log.info(
+        "Not inserting any records, organizations and/or opportunities are empty"
+      );
+      return;
+    }
+
     try {
       await instance.post("/organizations", this.organizations);
       log.info("Posted organizations");
