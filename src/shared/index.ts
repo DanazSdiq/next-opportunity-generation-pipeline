@@ -8,3 +8,4 @@ export * from "./axios";
 export * from "./FileSystem";
 export * from "./Cache";
 export * from "./logger";
+export * from "./convertHTMLToMarkdown";
