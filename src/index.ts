@@ -1,4 +1,4 @@
-import { OpportunityClass } from "./opportunities/Lever.class";
+import { OpportunityClass } from "./opportunities/Greenhouse.class";
 
 (async () => {
   const op = new OpportunityClass();
