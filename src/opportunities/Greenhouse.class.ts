@@ -64,7 +64,8 @@ export class OpportunityClass extends BaseClass {
 
     const title: string = $(".app-title").first().text() || "";
     const organizationName: string = this.extractOrganizationName(url);
-    const description: string = convertHTMLToMarkdown(body);
+    const content: string = $("#content").html() || "";
+    const description: string = convertHTMLToMarkdown(content);
     const commtiment: string = $(".location").first().text().trim() || "";
     const { commitment: normalizedCommitment } = this.getCommitment(commtiment);
     const location: string = commtiment;
