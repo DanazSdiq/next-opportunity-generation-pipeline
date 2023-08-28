@@ -6,7 +6,7 @@ import { OpportunityCommitment } from "./opportunities.schema";
 import { BaseClass } from "../shared/BaseClass/Base.class";
 import { Organization, PageConfig, convertHTMLToMarkdown } from "../shared";
 
-export class OpportunityClass extends BaseClass {
+export default class OpportunityClass extends BaseClass {
   organizations: Organization[] = [
     {
       name: "CoinGecko",

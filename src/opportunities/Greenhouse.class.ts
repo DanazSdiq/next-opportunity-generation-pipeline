@@ -10,7 +10,7 @@ import {
 } from "../shared";
 import { OpportunityCommitment } from "./opportunities.schema";
 
-export class OpportunityClass extends BaseClass {
+export default class OpportunityClass extends BaseClass {
   organizations: Organization[] = [
     {
       name: "Avalanche Labs",

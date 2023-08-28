@@ -11,8 +11,8 @@
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "test": "NODE_ENV=test ",
-    "dev": "NODE_ENV=development ts-node-dev ./src/index.ts",
-    "start": "npm run build && node build/index.js",
+    "opportunities": "NODE_ENV=development ts-node-dev ./src/opportunities.ts",
+    "start": "npm run build && node build/opportunities.js",
     "build": "rm -rf ./build && tsc"
   },
   "author": "danaz",
