@@ -1,11 +1,15 @@
 import puppeteer, { Browser, Page } from "puppeteer";
+import config from "../../config";
 
 export class BrowserClass {
   private browser!: Browser;
   private page!: Page;
 
   async init() {
-    this.browser = await puppeteer.launch({ headless: false });
+    this.browser = await puppeteer.launch({
+      headless: config.HEADLESS,
+      args: ["--no-sandbox"]
+    });
     this.page = await this.browser.newPage();
   }
 
