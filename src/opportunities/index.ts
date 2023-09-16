@@ -1,7 +1,7 @@
 import Lever from "./Lever.class";
-import Green from "./Green.class";
+import GreenHouse from "./GreenHouse.class";
 
 export default {
   Lever,
-  Green
+  GreenHouse
 };
